@@ -22,6 +22,9 @@ const Dashboard = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+  console.log("Categories:", categories.categories);
+  console.log("Active period:", activePeriod);
+  console.log("Selected category:", selectedCategory);
 
   return (
     <div className="space-y-6">
