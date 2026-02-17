@@ -1,4 +1,5 @@
-import type { Transaction } from "../../types";
+import { getIcon } from "../../hooks/getIcons";
+import { type Transaction } from "../../types";
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -27,15 +28,14 @@ const TransactionList = ({ transactions }: TransactionListProps) => {
               key={transaction.id}
               className="px-6 py-4 flex items-center gap-4 hover:bg-gray-50 transition-colors"
             >
-              {/* Category color dot */}
+              {/* Category color icon */}
               <div
                 className="w-10 h-10 rounded-card flex-shrink-0 flex items-center justify-center"
                 style={{ backgroundColor: `${transaction.categoryColor}20` }}
               >
-                <div
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: transaction.categoryColor }}
-                />
+                <span style={{ color: transaction.categoryColor }}>
+                  {getIcon(transaction.icon, 16)}
+                </span>
               </div>
 
               {/* Merchant + category */}

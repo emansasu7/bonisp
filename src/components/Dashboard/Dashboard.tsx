@@ -1,5 +1,5 @@
-import { categories } from "../../data";
 import { useDashboard } from "../../hooks/useDashboard";
+import type { TransactionCategory } from "../../types";
 import FilterBar from "./FilterBar";
 import SpendingChart from "./SpendingChart";
 import SummaryCards from "./SummaryCards";
@@ -14,6 +14,7 @@ const Dashboard = () => {
     transactions,
     transactionCount,
     trends,
+    categories,
     activePeriod,
     setActivePeriod,
     selectedCategory,
@@ -22,9 +23,6 @@ const Dashboard = () => {
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-  console.log("Categories:", categories.categories);
-  console.log("Active period:", activePeriod);
-  console.log("Selected category:", selectedCategory);
 
   return (
     <div className="space-y-6">
@@ -35,12 +33,14 @@ const Dashboard = () => {
         onCategoryChange={setSelectedCategory}
       />
       <SummaryCards
-        summary={spendingSummary}
+        summary={{
+          ...spendingSummary,
+          topCategory: spendingSummary.topCategory as TransactionCategory,
+        }}
         transactionCount={transactionCount}
       />
-
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <SpendingChart categories={categories.categories} />
+        <SpendingChart categories={categories} />
         <TrendsChart trends={trends} />
       </div>
       <TransactionList transactions={transactions} />

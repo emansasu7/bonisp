@@ -8,16 +8,24 @@ import {
   X,
 } from "lucide-react";
 import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { customer } from "../../data";
+
+const initials = customer.name
+  .split(" ")
+  .map((n) => n[0])
+  .join("");
 
 const navItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: ArrowLeftRight, label: "Transactions", active: false },
-  { icon: Target, label: "Goals", active: false },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/" },
+  { icon: ArrowLeftRight, label: "Transactions", path: "/transactions" },
+  { icon: Target, label: "Goals", path: "/goals" },
 ];
 
 export const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -48,21 +56,29 @@ export const Sidebar = () => {
       `}
       >
         {/* Logo + Collapse button */}
-        <div className="p-4 border-b border-white/10 flex items-center justify-between">
-          <div className="flex items-center gap-3 overflow-hidden">
-            <div className="relative w-8 h-8 flex-shrink-0">
-              <div className="absolute top-0 right-0 w-5 h-5 bg-capitec-blue rounded-md" />
-              <div className="absolute bottom-0 left-0 w-4 h-4 bg-capitec-red rounded-md" />
-            </div>
-            {!isCollapsed && (
-              <span className="text-white font-bold text-lg tracking-tight whitespace-nowrap">
-                Capitec
-              </span>
+        <div className="p-4 border-b border-white/10 flex items-center justify-between min-h-[64px]">
+          <button
+            onClick={() => navigate("/")}
+            className="flex items-center gap-3 overflow-hidden hover:opacity-80 transition-opacity"
+          >
+            {isCollapsed ? (
+              <img
+                src="logo.svg"
+                alt="Capitec"
+                className="h-8 w-auto flex-shrink-0"
+              />
+            ) : (
+              <img
+                src="logo_BI.svg"
+                alt="Capitec"
+                className="h-8 w-auto flex-shrink-0"
+              />
             )}
-          </div>
+          </button>
+
           {/* Collapse toggle - desktop only */}
           <button
-            className="hidden lg:flex items-center justify-center w-6 h-6 text-white/50 hover:text-white transition-colors"
+            className="hidden lg:flex items-center justify-center w-6 h-6 text-white/50 hover:text-white transition-colors flex-shrink-0"
             onClick={() => setIsCollapsed(!isCollapsed)}
           >
             {isCollapsed ? (
@@ -76,14 +92,15 @@ export const Sidebar = () => {
         {/* Nav items */}
         <nav className="flex-1 p-2 space-y-1">
           {navItems.map((item) => (
-            <button
+            <NavLink
               key={item.label}
-              className={`
-                w-full flex items-center gap-3 px-3 py-3 rounded-card
+              to={item.path}
+              className={({ isActive }) => `
+                flex items-center gap-3 px-3 py-3 rounded-card
                 text-sm font-medium transition-all duration-200
-                ${isCollapsed ? "justify-center" : ""}
+                ${isCollapsed ? "justify-center w-full" : "w-full"}
                 ${
-                  item.active
+                  isActive
                     ? "bg-capitec-blue text-white"
                     : "text-white/60 hover:text-white hover:bg-white/10"
                 }
@@ -94,7 +111,7 @@ export const Sidebar = () => {
               {!isCollapsed && (
                 <span className="whitespace-nowrap">{item.label}</span>
               )}
-            </button>
+            </NavLink>
           ))}
         </nav>
 
@@ -104,14 +121,16 @@ export const Sidebar = () => {
             className={`flex items-center gap-3 ${isCollapsed ? "justify-center" : ""}`}
           >
             <div className="w-8 h-8 rounded-full bg-capitec-blue flex-shrink-0 flex items-center justify-center text-white text-sm font-bold">
-              JD
+              {initials}
             </div>
             {!isCollapsed && (
               <div className="overflow-hidden">
                 <div className="text-white text-sm font-medium whitespace-nowrap">
-                  John Doe
+                  {customer.name}
                 </div>
-                <div className="text-white/50 text-xs">Premium Account</div>
+                <div className="text-white/50 text-xs">
+                  {customer.accountType} Account
+                </div>
               </div>
             )}
           </div>

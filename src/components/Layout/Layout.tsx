@@ -14,7 +14,7 @@ export const Layout = ({ children }: LayoutProps) => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-xl font-bold text-gray-900">
-                Good morning, John 👋
+                {getGreeting()}, John 👋
               </h1>
               <p className="text-sm text-gray-500">
                 Here's your spending overview
@@ -36,4 +36,11 @@ export const Layout = ({ children }: LayoutProps) => {
       </main>
     </div>
   );
+};
+
+const getGreeting = () => {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
 };

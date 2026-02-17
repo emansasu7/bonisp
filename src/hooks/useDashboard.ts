@@ -1,6 +1,10 @@
 import React from "react";
 import { goals, spendingSummary, trends } from "../data";
-import type { TransactionCategory } from "../types";
+import {
+  categoryColor,
+  categoryIcon,
+  type TransactionCategory,
+} from "../types";
 import { sampleTransactions } from "../utils/transactionsGenerator";
 
 export function useDashboard() {
@@ -27,10 +31,45 @@ export function useDashboard() {
     )
     .filter((t) => new Date(t.date) >= getDateFromPeriod(activePeriod));
 
+  const totalSpent = filteredTransactions.reduce((sum, t) => sum + t.amount, 0);
+  const averageTransaction =
+    filteredTransactions.length > 0
+      ? totalSpent / filteredTransactions.length
+      : 0;
+  const categoryTotals = filteredTransactions.reduce(
+    (acc, t) => {
+      acc[t.category] = (acc[t.category] || 0) + t.amount;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
+
+  const topCategory =
+    Object.entries(categoryTotals).sort(([, a], [, b]) => b - a)[0]?.[0] ??
+    "None";
+  const dynamicCategories = Object.entries(categoryTotals).map(
+    ([name, amount]) => ({
+      name: name as TransactionCategory,
+      amount,
+      percentage: totalSpent > 0 ? (amount / totalSpent) * 100 : 0,
+      transactionCount: filteredTransactions.filter((t) => t.category === name)
+        .length,
+      color: categoryColor[name as TransactionCategory],
+      icon: categoryIcon[name as TransactionCategory],
+    }),
+  );
+  const dynamicSummary = {
+    ...spendingSummary,
+    totalSpent,
+    averageTransaction,
+    topCategory,
+    transactionCount: filteredTransactions.length,
+  };
+
   return {
     isLoading,
     error,
-    spendingSummary,
+    spendingSummary: dynamicSummary,
     transactions: filteredTransactions,
     trends,
     goals,
@@ -39,6 +78,7 @@ export function useDashboard() {
     setActivePeriod,
     selectedCategory,
     setSelectedCategory,
+    categories: dynamicCategories,
   };
 }
 
