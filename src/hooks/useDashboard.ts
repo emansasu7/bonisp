@@ -7,7 +7,7 @@ export function useDashboard() {
   // Placeholder for any dashboard-specific logic or state management
 
   const [isLoading, setIsLoading] = React.useState(true);
-  const [error, setError] = React.useState<string | null>(null);
+  const [error, _setError] = React.useState<string | null>(null);
   const [activePeriod, setActivePeriod] = React.useState("30d");
   const [selectedCategory, setSelectedCategory] = React.useState<
     TransactionCategory | "All"
