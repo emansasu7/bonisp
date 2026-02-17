@@ -1,9 +1,9 @@
 import { ArrowUpDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { getIcon } from "../../hooks/getIcons";
 import { useDashboard } from "../../hooks/useDashboard";
 import type { Pagination } from "../../types";
 import { categoryColor } from "../../types/category";
+import { getIcon } from "../../utils/getIcons";
 import FilterBar from "../Dashboard/FilterBar";
 
 type SortOption = "date_desc" | "date_asc" | "amount_desc" | "amount_asc";

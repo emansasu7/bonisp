@@ -1,5 +1,5 @@
-import { getIcon } from "../../hooks/getIcons";
 import { type Transaction } from "../../types";
+import { getIcon } from "../../utils/getIcons";
 
 interface TransactionListProps {
   transactions: Transaction[];
