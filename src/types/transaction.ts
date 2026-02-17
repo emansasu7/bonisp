@@ -1,7 +1,7 @@
 import type { TransactionCategory } from "./category";
 import type { Pagination } from "./pagination";
 
-export type PaymentMethod = "Credit Card" | "Debit Card";
+export type PaymentMethod = "Credit Card" | "Debit Order";
 
 export interface Transaction {
   id: string;

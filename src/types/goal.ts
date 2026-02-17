@@ -1,6 +1,6 @@
 import type { TransactionCategory } from "./category";
 
-export type GoalStatus = "on_track" | "at_risk" | "exceeded";
+export type GoalStatus = "on_track" | "warning" | "exceeded";
 
 export interface Goal {
   id: string;
